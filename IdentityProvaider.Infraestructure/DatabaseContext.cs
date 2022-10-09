@@ -11,6 +11,7 @@ namespace IdentityProvaider.Infraestructure
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {            
@@ -57,6 +58,16 @@ namespace IdentityProvaider.Infraestructure
             modelBuilder.Entity<User>().OwnsOne(o => o.state, conf =>
             {
                 conf.Property(x => x.value).HasColumnName("state");
+            });
+
+            modelBuilder.Entity<Role>(o =>
+            {
+                o.HasKey(x => x.id_rol).HasName("id_rol");
+            });
+
+            modelBuilder.Entity<Role>().OwnsOne(o => o.name, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("rol_name");
             });
 
             base.OnModelCreating(modelBuilder);
