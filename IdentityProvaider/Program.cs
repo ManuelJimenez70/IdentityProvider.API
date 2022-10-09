@@ -23,6 +23,10 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<UserQueries>();
 builder.Services.AddScoped<UserServices>();
 
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<RoleQueries>();
+builder.Services.AddScoped<RoleServices>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
