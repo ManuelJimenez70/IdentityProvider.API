@@ -10,11 +10,13 @@ namespace IdentityProvaider.API.AplicationServices
     {
         private readonly IUserRepository repository;
         private readonly UserQueries userQueries;
+        private readonly IPasswordRepository passwordRepository;
 
-        public UserServices(IUserRepository repository, UserQueries userQueries)
+        public UserServices(IUserRepository repository, UserQueries userQueries, IPasswordRepository passwordRepository)
         {
             this.repository = repository;
             this.userQueries = userQueries;
+            this.passwordRepository = passwordRepository;
         }
 
         public async Task HandleCommand(CreateUserCommand createUser)
@@ -29,6 +31,10 @@ namespace IdentityProvaider.API.AplicationServices
             user.setDirection(Direction.create(createUser.direction));
             await repository.AddUser(user);
 
+            var securutyPassword = new Password(createUser.email);
+            securutyPassword.setPassword(Hash.create(createUser.password));
+            await passwordRepository.AddPassword(securutyPassword);
+
         }
 
         public async Task HandleCommand(UpdateUserCommand updateUserCommand)
@@ -42,6 +48,8 @@ namespace IdentityProvaider.API.AplicationServices
             user.setDirection(Direction.create(updateUserCommand.direction));
             user.setState(State.create(updateUserCommand.state));
             await repository.UpdateUser(user);
+
+            
         }
 
         public async Task<User> GetPerfil(int userId)

@@ -12,6 +12,7 @@ namespace IdentityProvaider.Infraestructure
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Password> SecurityPasswords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {            
@@ -71,6 +72,15 @@ namespace IdentityProvaider.Infraestructure
             });
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Password>(o =>
+            {
+                o.HasKey(x => x.hash).HasName("hash");
+            });
+            modelBuilder.Entity<Password>().OwnsOne(o => o.password, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("password");
+            });
         }
 
     }
