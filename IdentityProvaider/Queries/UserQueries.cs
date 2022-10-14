@@ -17,5 +17,11 @@ namespace IdentityProvaider.API.Queries
             var response = await userRepository.GetUserById(UserId.create(id));
             return response;
         }
+
+        public async Task<List<User>> GetUsersByNum(int numI, int numF)
+        {
+            var response = await userRepository.GetUsersByNum(numI,numF);
+            return response;
+        }
     }
 }

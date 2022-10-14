@@ -2,6 +2,7 @@
 using IdentityProvaider.API.Commands;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace IdentityProvaider.API.Controllers
@@ -28,6 +29,12 @@ namespace IdentityProvaider.API.Controllers
         {
             var response = await userServices.GetPerfil(id);
             return Ok(response);
+        }
+
+        [HttpGet("Rango de Usuarios - id")]
+        public async Task<IActionResult> GetPerfil(int numI, int numF)
+        {
+            return Ok(await userServices.GetUsersByNum(numI,numF));
         }
 
         [HttpPost("update")]

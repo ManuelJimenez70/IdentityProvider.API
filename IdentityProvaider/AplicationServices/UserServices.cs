@@ -56,5 +56,10 @@ namespace IdentityProvaider.API.AplicationServices
         {
             return await userQueries.GetUserIdAsync(userId);
         }
+
+        public async Task<List<User>> GetUsersByNum(int numI, int numF)
+        {
+            return await userQueries.GetUsersByNum(numI,numF);
+        }
     }
 }

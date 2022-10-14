@@ -11,6 +11,7 @@ namespace IdentityProvaider.Domain.Repositories
     public interface IUserRepository
     {
         Task<User> GetUserById(UserId Id);
+        Task<List<User>> GetUsersByNum(int numI, int numF);
         Task AddUser(User user);
         Task UpdateUser(User user);
     }
