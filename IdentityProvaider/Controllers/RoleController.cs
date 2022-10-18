@@ -16,7 +16,7 @@ namespace IdentityProvaider.API.Controllers
             this.roleServices = roleServices;
         }
         [HttpPost]
-        public async Task<IActionResult> AddPerfile(CreateRoleCommand createRoleCommand)
+        public async Task<IActionResult> AddRole(CreateRoleCommand createRoleCommand)
         {
             await roleServices.HandleCommand(createRoleCommand);
             return Ok(createRoleCommand);

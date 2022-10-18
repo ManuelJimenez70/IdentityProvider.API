@@ -12,6 +12,8 @@ namespace IdentityProvaider.Infraestructure
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<LogUser> Log_Users { get; set; }
+
         public DbSet<Password> SecurityPasswords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -53,12 +55,86 @@ namespace IdentityProvaider.Infraestructure
 
             modelBuilder.Entity<User>().OwnsOne(o => o.direction, conf =>
             {
-                conf.Property(x => x.value).HasColumnName("direccion");
+                conf.Property(x => x.value).HasColumnName("adress");
             });
 
             modelBuilder.Entity<User>().OwnsOne(o => o.state, conf =>
             {
                 conf.Property(x => x.value).HasColumnName("state");
+            });
+
+            modelBuilder.Entity<LogUser>(o =>
+            {
+                o.HasKey(x => x.id_log).HasName("id_log");
+            });
+
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.id_edit_user, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("id_edit_user");
+            });
+
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.id_manager, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("id_manager");
+            });
+
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.iP, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("ip");
+            });
+   
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.location, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("location");
+            });
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.coordinate, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("coordinate");
+            });
+
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.email, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("email");
+            });
+
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.name, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("name");
+            });
+
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.lastName, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("last_name");
+            });
+
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.typeDocument, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("type_document");
+            });
+
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.identification, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("document_number");
+            });
+
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.state, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("state");
+            });
+
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.direction, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("address");
+            });
+
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.logDate, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("log_date");
+            });
+
+            modelBuilder.Entity<LogUser>().OwnsOne(o => o.description, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("description");
             });
 
             modelBuilder.Entity<Role>(o =>
@@ -69,6 +145,11 @@ namespace IdentityProvaider.Infraestructure
             modelBuilder.Entity<Role>().OwnsOne(o => o.name, conf =>
             {
                 conf.Property(x => x.value).HasColumnName("rol_name");
+            });
+
+            modelBuilder.Entity<Role>().OwnsOne(o => o.description, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("description");
             });
 
             base.OnModelCreating(modelBuilder);
