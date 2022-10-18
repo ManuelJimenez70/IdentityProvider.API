@@ -30,10 +30,11 @@ namespace IdentityProvaider.API.AplicationServices
             user.setIdentification(UserIdentification.create(createUser.document_number));
             user.setDirection(Direction.create(createUser.direction));
             await repository.AddUser(user);
-
             var securutyPassword = new Password(createUser.email);
             securutyPassword.setPassword(Hash.create(createUser.password));
             await passwordRepository.AddPassword(securutyPassword);
+
+            
 
 
 
