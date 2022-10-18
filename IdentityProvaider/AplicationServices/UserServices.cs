@@ -33,8 +33,8 @@ namespace IdentityProvaider.API.AplicationServices
 
             var securutyPassword = new Password(createUser.email);
             securutyPassword.setPassword(Hash.create(createUser.password));
-            await passwordRepository.AddPassword(securutyPassword);    
-            
+            await passwordRepository.AddPassword(securutyPassword);
+
 
 
         }
@@ -53,24 +53,24 @@ namespace IdentityProvaider.API.AplicationServices
 
 
 
-            
+
         }
 
         public async Task HandleCommand(UpdatePasswordCommand updatePassword)
         {
-            // traer contraseña by email
-            // comparar contraseñas
-            // 
             Password password = await passwordRepository.GetPasswordByHash(Hash.create(updatePassword.email));
-            if (password.password.Equals(Hash.create(updatePassword.password))){
-
+            if (password.password.Equals(Hash.create(updatePassword.password))) {
+                var securutyPassword = new Password(updatePassword.email);
+                securutyPassword.setPassword(Hash.create(updatePassword.newPassword));
+                await passwordRepository.UpdatePassword(securutyPassword);
             }
-            
 
-            var securutyPassword = new Password(updatePassword.email);
-            securutyPassword.setPassword(Hash.create(updatePassword.newPassword));
-            await passwordRepository.UpdatePassword(securutyPassword);
         }
+
+        public async Task<Password> GetPassword(string email)
+        {
+            return await passwordRepository.GetPasswordByHash(Hash.create(email));
+    }
 
         public async Task<User> GetPerfil(int userId)
         {

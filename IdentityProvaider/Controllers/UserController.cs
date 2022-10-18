@@ -52,5 +52,11 @@ namespace IdentityProvaider.API.Controllers
             return Ok(updatePassword);
         }
 
+        [HttpPost("GetPassword")]
+        public async Task<IActionResult> UpdatePassword(string email)
+        {
+            var response = await userServices.GetPassword(email);
+            return Ok(response);
+        }
     }
 }
