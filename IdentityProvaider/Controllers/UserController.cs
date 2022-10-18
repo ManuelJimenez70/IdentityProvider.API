@@ -19,29 +19,37 @@ namespace IdentityProvaider.API.Controllers
             this.userServices = userServices;
         }
         [HttpPost]
-        public async Task<IActionResult> AddPerfile(CreateUserCommand createPerfilCommand)
+        public async Task<IActionResult> AddUser(CreateUserCommand createPerfilCommand)
         {
             await userServices.HandleCommand(createPerfilCommand);
             return Ok(createPerfilCommand);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPerfil(int id)
+        public async Task<IActionResult> GetUser(int id)
         {
             var response = await userServices.GetPerfil(id);
             return Ok(response);
         }
 
         [HttpGet("Rango de Usuarios - id")]
-        public async Task<IActionResult> GetPerfil(int numI, int numF)
+        public async Task<IActionResult> GetUser(int numI, int numF)
         {
             return Ok(await userServices.GetUsersByNum(numI,numF));
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> UpdatePerfil(UpdateUserCommand updatePerfil)
+        public async Task<IActionResult> UpdateUser(UpdateUserCommand updatePerfil)
         {
             await userServices.HandleCommand(updatePerfil);
             return Ok(updatePerfil);
+        }
+
+
+        [HttpPost("updatePassword")]
+        public async Task<IActionResult> UpdatePassword(UpdatePasswordCommand updatePassword)
+        {
+            await userServices.HandleCommand(updatePassword);
+            return Ok(updatePassword);
         }
 
     }
