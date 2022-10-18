@@ -11,15 +11,18 @@ namespace IdentityProvaider.API.AplicationServices
         private readonly IUserRepository repository;
         private readonly UserQueries userQueries;
         private readonly IPasswordRepository passwordRepository;
+        private readonly ILogUserRepository logRepository;        
 
-        public UserServices(IUserRepository repository, UserQueries userQueries, IPasswordRepository passwordRepository)
+        public UserServices(IUserRepository repository, UserQueries userQueries, IPasswordRepository passwordRepository,
+            ILogUserRepository logRepository)
         {
             this.repository = repository;
             this.userQueries = userQueries;
             this.passwordRepository = passwordRepository;
+            this.logRepository = logRepository;            
         }
 
-        public async Task HandleCommand(CreateUserCommand createUser)
+        public async Task HandleCommand(CreateUserCommand createUser , string ip)
         {
 
             var user = new User();
@@ -29,14 +32,26 @@ namespace IdentityProvaider.API.AplicationServices
             user.setTypeDocument(UserTypeDocument.create(createUser.typeDocument));
             user.setIdentification(UserIdentification.create(createUser.document_number));
             user.setDirection(Direction.create(createUser.direction));
+
             await repository.AddUser(user);
             var securutyPassword = new Password(createUser.email);
             securutyPassword.setPassword(Hash.create(createUser.password));
             await passwordRepository.AddPassword(securutyPassword);
 
-            
 
-
+            var log = new LogUser();
+            log.setIP(IP.create(ip));
+            log.setIdManager(UserId.create(createUser.id_manager));
+            log.setIdEditUser(UserId.create(user.id_user));
+            log.setEmail(Email.create(createUser.email));
+            log.setName(UserName.create(createUser.name));
+            log.setLastName(UserLastName.create(createUser.lastName));
+            log.setTypeDocument(UserTypeDocument.create(createUser.typeDocument));
+            log.setIdentification(UserIdentification.create(createUser.document_number));
+            log.setDirection(Direction.create(createUser.direction));
+            log.setState(user.state);
+            log.setDescription(Description.create("Se crea nuevo usuario"));
+            await logRepository.AddLogUser(log);
 
         }
 

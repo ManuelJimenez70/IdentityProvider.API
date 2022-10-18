@@ -55,7 +55,7 @@ namespace IdentityProvaider.Infraestructure
 
             modelBuilder.Entity<User>().OwnsOne(o => o.direction, conf =>
             {
-                conf.Property(x => x.value).HasColumnName("adress");
+                conf.Property(x => x.value).HasColumnName("address");
             });
 
             modelBuilder.Entity<User>().OwnsOne(o => o.state, conf =>

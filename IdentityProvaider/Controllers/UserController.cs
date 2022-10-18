@@ -31,13 +31,16 @@ namespace IdentityProvaider.API.Controllers
             var client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync("https://api.myip.com");
             //InfoUser infoUser = null;
+            MyIp myIp = null;
             if (response.IsSuccessStatusCode)
             {
                 try
                 {            
-                    MyIp fe = await response.Content.ReadFromJsonAsync<MyIp>();
+                    myIp = await response.Content.ReadFromJsonAsync<MyIp>();
                     string urlApi = "http://api.ipapi.com/";
                     string paramsApi = "?access_key=48565ca8121d0eb5414aca7a23549f61";
+
+                    /*
                     response = await client.GetAsync(urlApi + fe.ip + paramsApi);
                     dynamic infoUser = new ExpandoObject();
                      infoUser = await response.Content.ReadFromJsonAsync<dynamic>();
@@ -50,7 +53,7 @@ namespace IdentityProvaider.API.Controllers
                     //Assert.AreEqual("pie", p.Name);
                     //Assert.AreEqual(true, (bool)p.Value);        
                     Console.WriteLine("######");
-                    Console.WriteLine(infoUser.city);
+                    Console.WriteLine(infoUser.city);*/
 
 
 
@@ -63,7 +66,7 @@ namespace IdentityProvaider.API.Controllers
 
             }                  
             //string userIP = Request.UserHostAddress;
-            await userServices.HandleCommand(createPerfilCommand);
+            await userServices.HandleCommand(createPerfilCommand , myIp.ip);
             return Ok(createPerfilCommand);
         }
         [HttpGet("{id}")]
