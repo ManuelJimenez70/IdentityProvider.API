@@ -1,4 +1,4 @@
 ﻿namespace IdentityProvaider.API.Commands
 {
-    public record CreateRoleCommand(string name);
+    public record CreateRoleCommand(string name, string description);
 }

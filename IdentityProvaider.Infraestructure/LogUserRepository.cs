@@ -3,37 +3,37 @@ using IdentityProvaider.Domain.Repositories;
 using IdentityProvaider.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace IdentityProvaider.Infraestructure
 {
-    public class RoleRepository: IRoleRepository
+    public class LogUserRepository : ILogUserRepository
     {
-        DatabaseContext db;
 
-        public RoleRepository(DatabaseContext db)
+        DatabaseContext db;
+        public LogUserRepository(DatabaseContext db)
         {
             this.db = db;
         }
 
-        public async Task AddRole(Role role)
+        public async Task AddLogUser(LogUser user)
         {
-            await db.AddAsync(role);
+            await db.AddAsync(user);
             await db.SaveChangesAsync();
         }
 
-        public async Task<Role> GetRoleById(RolId Id)
+        public async Task<LogUser> GetLogUserById(LogUserId Id)
         {
-            return await db.Roles.FindAsync((int)Id);
+            return await db.Log_Users.FindAsync((int)Id);
         }
 
-        public async Task UpdateRole(Role role)
+        public async Task UpdateLogUser(LogUser user)
         {
-            db.Update(role);
+            db.Update(user);
             db.SaveChanges();
         }
-
     }
 }

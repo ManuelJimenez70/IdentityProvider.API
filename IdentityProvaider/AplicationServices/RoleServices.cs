@@ -22,7 +22,7 @@ namespace IdentityProvaider.API.AplicationServices
 
             var role = new Role();
             role.setName(RoleName.create(createRole.name));
-
+            role.setDescription(Description.create(createRole.description));
             await repository.AddRole(role);
 
         }
@@ -31,7 +31,7 @@ namespace IdentityProvaider.API.AplicationServices
         {
             var role = new Role(RolId.create(updateRoleCommand.id));
             role.setName(RoleName.create(updateRoleCommand.name));
-   
+            role.setDescription(Description.create(updateRoleCommand.description));
             await repository.UpdateRole(role);
         }
 

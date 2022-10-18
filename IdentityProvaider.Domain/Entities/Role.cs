@@ -13,6 +13,8 @@ namespace IdentityProvaider.Domain.Entities
 
         public RoleName name { get; private set; }
 
+        public Description description { get; private set; }
+
         public Role()
         {
         }
@@ -25,6 +27,11 @@ namespace IdentityProvaider.Domain.Entities
         public void setName(RoleName name)
         {
             this.name = name;
+        }
+
+        public void setDescription(Description description)
+        {
+            this.description = description;
         }
     }
 }
