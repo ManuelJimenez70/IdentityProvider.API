@@ -59,9 +59,16 @@ namespace IdentityProvaider.API.AplicationServices
         public async Task HandleCommand(UpdatePasswordCommand updatePassword)
         {
             // traer contraseña by email
-            // comparar contraseñas           
+            // comparar contraseñas
+            // 
+            Password password = await passwordRepository.GetPasswordByHash(Hash.create(updatePassword.email));
+            if (password.password.Equals(Hash.create(updatePassword.password))){
+
+            }
+            
+
             var securutyPassword = new Password(updatePassword.email);
-            securutyPassword.setPassword(Hash.create(updatePassword.password));
+            securutyPassword.setPassword(Hash.create(updatePassword.newPassword));
             await passwordRepository.UpdatePassword(securutyPassword);
         }
 
