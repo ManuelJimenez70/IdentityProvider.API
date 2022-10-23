@@ -17,6 +17,9 @@ namespace IdentityProvaider.Infraestructure
         public DbSet<Rol_User> Rol_User { get; set; }
         public DbSet<Password> SecurityPasswords { get; set; }
 
+        public DbSet<Session> InSession { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {            
             modelBuilder.Entity<User>(o =>
@@ -136,6 +139,21 @@ namespace IdentityProvaider.Infraestructure
             modelBuilder.Entity<LogUser>().OwnsOne(o => o.description, conf =>
             {
                 conf.Property(x => x.value).HasColumnName("description");
+            });
+
+            modelBuilder.Entity<Session>(o =>
+            {
+                o.HasKey(x => x.id_session).HasName("id_session");
+            });
+
+            modelBuilder.Entity<Session>().OwnsOne(o => o.id_user, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("id_user");
+            });
+
+            modelBuilder.Entity<Session>().OwnsOne(o => o.loginDate, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("loginDate");
             });
 
             modelBuilder.Entity<Role>(o =>

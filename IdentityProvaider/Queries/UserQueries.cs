@@ -28,5 +28,6 @@ namespace IdentityProvaider.API.Queries
             var response = await userRepository.getRolesByIdUser(UserId.create(userId));
             return response;
         }
+
     }
 }

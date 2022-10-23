@@ -103,6 +103,13 @@ namespace IdentityProvaider.API.Controllers
             return Ok(response);
         }
 
+        [HttpGet("getSessionByIdUser/{id}")]
+        public async Task<IActionResult> getSession(int id)
+        {
+            var response = await userServices.GetSessionsByIdUser(id);
+            return Ok(response);
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> login(LoginCommand login)
         {

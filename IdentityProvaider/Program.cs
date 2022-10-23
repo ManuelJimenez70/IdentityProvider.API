@@ -28,6 +28,8 @@ builder.Services.AddScoped<UserQueries>();
 builder.Services.AddScoped<UserServices>();
 
 builder.Services.AddScoped<ILogUserRepository, LogUserRepository>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+
 
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<RoleQueries>();

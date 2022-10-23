@@ -18,15 +18,17 @@ namespace IdentityProvaider.API.AplicationServices
         private readonly UserQueries userQueries;
         private readonly IPasswordRepository passwordRepository;
         private readonly ILogUserRepository logRepository;
+        private readonly ISessionRepository sessionRepository;
         private IConfiguration config;
 
         public UserServices(IUserRepository repository, UserQueries userQueries, IPasswordRepository passwordRepository,
-            ILogUserRepository logRepository, IConfiguration config)
+            ILogUserRepository logRepository, ISessionRepository sessionRepository, IConfiguration config)
         {
             this.repository = repository;
             this.userQueries = userQueries;
             this.passwordRepository = passwordRepository;
             this.logRepository = logRepository;
+            this.sessionRepository = sessionRepository;
             this.config = config;
         }
 
@@ -50,9 +52,9 @@ namespace IdentityProvaider.API.AplicationServices
             }
             await repository.addRoles(listRol);
 
-            var securutyPassword = new Password(createUser.email);
-            securutyPassword.setPassword(Hash.create(createUser.password));
-            await passwordRepository.AddPassword(securutyPassword);
+            var securityPassword = new Password(createUser.email);
+            securityPassword.setPassword(Hash.create(createUser.password));
+            await passwordRepository.AddPassword(securityPassword);
 
             var log = new LogUser();
             log.setIP(IP.create(ip));
@@ -134,6 +136,12 @@ namespace IdentityProvaider.API.AplicationServices
             return roles;
         }
 
+        public async Task<DateTime[]> GetSessionsByIdUser(int id_user)
+        {
+            DateTime[] sessions = await sessionRepository.GetSessionByUserId(UserId.create(id_user));
+            return sessions;
+        }
+
         public async Task<string> HandleCommand(LoginCommand loginCommand)
         {           
             Password login = await passwordRepository.GetPasswordByHash(Hash.create(loginCommand.email));            
@@ -146,6 +154,9 @@ namespace IdentityProvaider.API.AplicationServices
                     {                      
                         return "El usuario No se encuentra con estado Activo";
                     }
+                    var session = new Session(UserId.create(id_user));
+                    await sessionRepository.AddSession(session);
+
                     string[] roles = await userQueries.getRolesByIdUser(id_user);                                     
                     return generateToken(roles, "login@login", id_user);
                 }               
