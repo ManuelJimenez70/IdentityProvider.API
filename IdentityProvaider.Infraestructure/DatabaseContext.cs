@@ -14,6 +14,7 @@ namespace IdentityProvaider.Infraestructure
         public DbSet<Role> Roles { get; set; }
         public DbSet<LogUser> Log_Users { get; set; }
 
+        public DbSet<Rol_User> Rol_User { get; set; }
         public DbSet<Password> SecurityPasswords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -152,7 +153,33 @@ namespace IdentityProvaider.Infraestructure
                 conf.Property(x => x.value).HasColumnName("description");
             });
 
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Rol_User>().HasKey(sc => new { sc.id_user, sc.id_rol });
+
+            modelBuilder.Entity<Rol_User>()
+                .HasOne<User>(sc => sc.user)
+                .WithMany(s => s.rol_Users)
+                .HasForeignKey(sc => sc.id_user);
+
+            modelBuilder.Entity<Rol_User>()
+            .Property(o => o.id_user).HasColumnName("id_user");
+
+            modelBuilder.Entity<Rol_User>()
+                .HasOne<Role>(sc => sc.role)
+                .WithMany(s => s.rol_Users)
+                .HasForeignKey(sc => sc.id_rol);
+
+            //modelBuilder.Entity<Rol_User>()
+            //.Property(o => o.id_user).HasColumnName("id_rol");
+
+            modelBuilder.Entity<Rol_User>().OwnsOne(o => o.creationDate, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("creation_rol");
+            });
+
+            modelBuilder.Entity<Rol_User>().OwnsOne(o => o.state, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("state_rol");
+            });
 
             modelBuilder.Entity<Password>(o =>
             {
@@ -162,6 +189,8 @@ namespace IdentityProvaider.Infraestructure
             {
                 conf.Property(x => x.value).HasColumnName("password");
             });
+
+            base.OnModelCreating(modelBuilder);
         }
 
     }

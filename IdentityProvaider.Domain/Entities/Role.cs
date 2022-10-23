@@ -14,6 +14,7 @@ namespace IdentityProvaider.Domain.Entities
         public RoleName name { get; private set; }
 
         public Description description { get; private set; }
+        public IList<Rol_User> rol_Users { get; set; }
 
         public Role()
         {

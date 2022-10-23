@@ -8,20 +8,20 @@ namespace IdentityProvaider.Domain.ValueObjects
 {
     public record State
     {
-        public char value { get; init; }
+        public string value { get; init; }
 
-        internal State(char value)
+        internal State(string value)
         {
             this.value = value;
         }
 
-        public static State create(char value)
+        public static State create(string value)
         {
             validate(value);
             return new State(value);
         }
 
-        private static void validate(char value)
+        private static void validate(string value)
         {
             if (value == null)
             {

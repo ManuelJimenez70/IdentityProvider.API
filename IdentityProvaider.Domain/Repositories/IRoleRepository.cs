@@ -13,5 +13,7 @@ namespace IdentityProvaider.Domain.Repositories
         Task<Role> GetRoleById(RolId Id);
         Task AddRole(Role role);
         Task UpdateRole(Role role);
+
+        //Task<List<Roles>> GetRoles();
     }
 }

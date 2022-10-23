@@ -21,10 +21,13 @@ namespace IdentityProvaider.Domain.Entities
         public State  state { get; private set; }
         public Direction direction { get; private set; }
 
+        public IList<Rol_User> rol_Users { get; set; }
+        public static object Claims { get; set; }
+
         public User()
         {
             creationDate = CreationDate.create(DateTime.Now);
-            state = State.create('A');
+            state = State.create("Activo");
         }
 
         public User(int id_user)

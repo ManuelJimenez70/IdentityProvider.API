@@ -15,21 +15,21 @@ namespace IdentityProvaider.API.Controllers
         {
             this.roleServices = roleServices;
         }
-        [HttpPost]
+        [HttpPost("createRol")]
         public async Task<IActionResult> AddRole(CreateRoleCommand createRoleCommand)
         {
             await roleServices.HandleCommand(createRoleCommand);
             return Ok(createRoleCommand);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getRolById/{id}")]
         public async Task<IActionResult> GetRole(int id)
         {
             var response = await roleServices.GetRole(id);
             return Ok(response);
         }
 
-        [HttpPost("update")]
+        [HttpPost("updateRol")]
         public async Task<IActionResult> UpdateRole(UpdateRoleCommand updateRole)
         {
             await roleServices.HandleCommand(updateRole);

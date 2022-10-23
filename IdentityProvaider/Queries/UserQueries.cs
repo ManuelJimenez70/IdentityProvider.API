@@ -23,5 +23,10 @@ namespace IdentityProvaider.API.Queries
             var response = await userRepository.GetUsersByNum(numI,numF);
             return response;
         }
+        public async Task<string[]> getRolesByIdUser(int userId)
+        {
+            var response = await userRepository.getRolesByIdUser(UserId.create(userId));
+            return response;
+        }
     }
 }

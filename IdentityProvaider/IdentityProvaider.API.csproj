@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IdentityProvaider.Domain\IdentityProvaider.Domain.csproj" />
     <ProjectReference Include="..\IdentityProvaider.Infraestructure\IdentityProvaider.Infraestructure.csproj" />
   </ItemGroup>
 

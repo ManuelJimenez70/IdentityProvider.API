@@ -20,7 +20,7 @@ namespace IdentityProvaider.API.Controllers
         {
             this.userServices = userServices;
         }
-        [HttpPost]
+        [HttpPost("createUser")]
         public async Task<IActionResult> AddUser(CreateUserCommand createPerfilCommand)
         {
         //var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
@@ -69,20 +69,20 @@ namespace IdentityProvaider.API.Controllers
             await userServices.HandleCommand(createPerfilCommand , myIp.ip);
             return Ok(createPerfilCommand);
         }
-        [HttpGet("{id}")]
+        [HttpGet("getUserById/{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
             var response = await userServices.GetPerfil(id);
             return Ok(response);
         }
 
-        [HttpGet("Rango de Usuarios - id")]
+        [HttpGet("getUsersByRange")]
         public async Task<IActionResult> GetUser(int numI, int numF)
         {
             return Ok(await userServices.GetUsersByNum(numI,numF));
         }
 
-        [HttpPost("update")]
+        [HttpPost("updateUser")]
         public async Task<IActionResult> UpdateUser(UpdateUserCommand updatePerfil)
         {
             await userServices.HandleCommand(updatePerfil);
@@ -92,15 +92,21 @@ namespace IdentityProvaider.API.Controllers
 
         [HttpPost("updatePassword")]
         public async Task<IActionResult> UpdatePassword(UpdatePasswordCommand updatePassword)
+        {            
+            return Ok(await userServices.HandleCommand(updatePassword));
+        }        
+
+        [HttpGet("getRolesByIdUser/{id}")]
+        public async Task<IActionResult> getUser(int id)
         {
-            await userServices.HandleCommand(updatePassword);
-            return Ok(updatePassword);
+            var response = await userServices.GetRolesByIdUser(id);
+            return Ok(response);
         }
 
-        [HttpPost("GetPassword")]
-        public async Task<IActionResult> UpdatePassword(string email)
+        [HttpPost("login")]
+        public async Task<IActionResult> login(LoginCommand login)
         {
-            var response = await userServices.GetPassword(email);
+            var response = await userServices.HandleCommand(login);
             return Ok(response);
         }
     }
