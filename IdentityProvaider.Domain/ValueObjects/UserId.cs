@@ -12,6 +12,7 @@ namespace IdentityProvaider.Domain.ValueObjects
 
         internal UserId(int value)
         {
+            validate(value);
             this.value = value;
         }
 
@@ -19,10 +20,12 @@ namespace IdentityProvaider.Domain.ValueObjects
         {
             return new UserId(value);
         }
-
-        public static implicit operator int(UserId userId)
+        private static void validate(int value)
         {
-            return userId.value;
+            if (value <= 0)
+            {
+                throw new ArgumentNullException("El valor del Id tiene que ser mayor a cero");
+            }
         }
     }
 }

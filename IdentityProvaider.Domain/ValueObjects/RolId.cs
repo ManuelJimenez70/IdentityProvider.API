@@ -17,12 +17,20 @@ namespace IdentityProvaider.Domain.ValueObjects
 
         public static RolId create(int value)
         {
+            validate(value);
             return new RolId(value);
         }
 
         public static implicit operator int(RolId credentialId)
         {
             return credentialId.value;
+        }
+        private static void validate(int value)
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentNullException("El valor del Id tiene que ser mayor a cero");
+            }
         }
     }
 }

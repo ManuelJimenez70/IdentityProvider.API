@@ -22,9 +22,12 @@ namespace IdentityProvaider.Domain.ValueObjects
         {
             if (value == null)
             {
-                throw new ArgumentNullException("El valor no puede ser nulo");
+                throw new ArgumentNullException("El Apellido no puede ser nulo");
             }
-            //agregar que el valor no puede ser mayor  a 50 caracteres
+            if (value.Length > 25)
+            {
+                throw new ArgumentNullException("El tipo de documento supera la longitud máxima");
+            }
         }
     }
 }

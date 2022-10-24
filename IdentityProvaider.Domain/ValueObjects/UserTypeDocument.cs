@@ -31,6 +31,10 @@ namespace IdentityProvaider.Domain.ValueObjects
             {
                 throw new ArgumentNullException("El valor no puede ser nulo");
             }
+            if (value.Length > 3)
+            {
+                throw new ArgumentNullException("El tipo de documento supera la longitud máxima");
+            }
             //agregar que el valor no puede ser mayor  a 50 caracteres
         }
     }
