@@ -36,7 +36,7 @@ namespace IdentityProvaider.Domain.Entities
         }
 
         public void setEmail(Email email)
-        {
+        {            
             this.email = email;
         }
 

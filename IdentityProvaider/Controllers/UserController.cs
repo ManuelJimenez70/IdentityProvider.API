@@ -73,14 +73,14 @@ namespace IdentityProvaider.API.Controllers
         [HttpGet("getUserById/{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var response = await userServices.GetPerfil(id);
+            var response = await userServices.GetUser(id);
             return Ok(response);
         }
 
         [HttpGet("getUsersByRange")]
-        public async Task<IActionResult> GetUser(int numI, int numF)
+        public async Task<IActionResult> GetUser(int numI, int numF, string state)
         {
-            return Ok(await userServices.GetUsersByNum(numI,numF));
+            return Ok(await userServices.GetUsersByNum(numI,numF, state));
         }
 
         [HttpPost("updateUser")]
@@ -118,8 +118,20 @@ namespace IdentityProvaider.API.Controllers
         [HttpGet("getSessionByIdUser/{id}")]
         public async Task<IActionResult> getSession(int id)
         {
-            var response = await userServices.GetSessionsByIdUser(id);
-            return Ok(response);
+            return Ok(await userServices.GetSessionsByIdUser(id));
+        }
+
+        [HttpGet("getUsersInSession")]
+        public async Task<IActionResult> getUserInSession()
+        {
+            return Ok(await userServices.getUsersInSession());
+        }
+
+
+        [HttpGet("getUsersInSession/{top}/{initTime}")]
+        public async Task<IActionResult> getUserInSessionByParams(int top, DateTime initTime)
+        {
+            return Ok(await userServices.getUsersInSessionByParams(top,initTime));
         }
 
         [HttpPost("login")]
@@ -128,19 +140,18 @@ namespace IdentityProvaider.API.Controllers
             var response = await userServices.HandleCommand(login);
             return Ok(response);
         }
+
+        [HttpGet("getHistoryOfLogState")]
+        public async Task<IActionResult> getHistoryOfLogState(int id_user)
+        {
+            return Ok(await userServices.getHistoryOfLogState(id_user));
+        }
     }
     public class MyIp
     {
         public string ip { get; set; }
         public string country { get; set; }
         public string cc { get; set; }        
-    }
-
-    public class InfoUser
-    {
-        public string city { get; set; }
-        public string latitude { get; set; }
-        public string longitude { get; set; }
     }
 
 }

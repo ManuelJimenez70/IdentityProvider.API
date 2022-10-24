@@ -74,26 +74,35 @@ namespace IdentityProvaider.API.AplicationServices
 
         public async Task HandleCommand(UpdateUserCommand updateUserCommand,string ip)
         {
-            var user = new User(UserId.create(updateUserCommand.id));
-            user.setEmail(Email.create(updateUserCommand.email));
-            user.setName(UserName.create(updateUserCommand.name));
-            user.setTypeDocument(UserTypeDocument.create(updateUserCommand.typeDocument));
-            user.setLastName(UserLastName.create(updateUserCommand.lastName));
-            user.setIdentification(UserIdentification.create(updateUserCommand.document_number));
-            user.setDirection(Direction.create(updateUserCommand.direction));
-            user.setState(State.create(updateUserCommand.state));
+            //var user = new User(UserId.create(updateUserCommand.id));
+            var user = await userQueries.GetUserIdAsync(updateUserCommand.id);
+            string email = string.IsNullOrEmpty(updateUserCommand.email) ? user.email.value : updateUserCommand.email;
+            user.setEmail(Email.create(email));
+            string name = string.IsNullOrEmpty(updateUserCommand.name) ? user.name.value : updateUserCommand.name;
+            user.setName(UserName.create(name));
+            string typeDocument = string.IsNullOrEmpty(updateUserCommand.typeDocument) ? user.typeDocument.value : updateUserCommand.typeDocument;
+            user.setTypeDocument(UserTypeDocument.create(typeDocument));
+            string lastName = string.IsNullOrEmpty(updateUserCommand.lastName) ? user.lastName.value : updateUserCommand.lastName;
+            user.setLastName(UserLastName.create(lastName));
+            string identification = string.IsNullOrEmpty(updateUserCommand.document_number) ? user.identification.value : updateUserCommand.document_number;
+            user.setIdentification(UserIdentification.create(identification));
+            string direction = string.IsNullOrEmpty(updateUserCommand.direction) ? user.direction.value : updateUserCommand.direction;
+            user.setDirection(Direction.create(direction));
+            string state = string.IsNullOrEmpty(updateUserCommand.state) ? user.state.value : updateUserCommand.state;
+            user.setState(State.create(state));            
+
             await repository.UpdateUser(user);
 
             var log = new LogUser();
             log.setIP(IP.create(ip));
             log.setIdManager(UserId.create(updateUserCommand.id_manager));
             log.setIdEditUser(UserId.create(user.id_user));
-            log.setEmail(Email.create(updateUserCommand.email));
-            log.setName(UserName.create(updateUserCommand.name));
-            log.setLastName(UserLastName.create(updateUserCommand.lastName));
-            log.setTypeDocument(UserTypeDocument.create(updateUserCommand.typeDocument));
-            log.setIdentification(UserIdentification.create(updateUserCommand.document_number));
-            log.setDirection(Direction.create(updateUserCommand.direction));
+            log.setEmail(user.email);
+            log.setName(user.name);
+            log.setLastName(user.lastName);
+            log.setTypeDocument(user.typeDocument);
+            log.setIdentification(user.identification);
+            log.setDirection(user.direction);
             log.setState(user.state);
             string data = string.IsNullOrEmpty(updateUserCommand.description) ? "Se actualiza usuario" : updateUserCommand.description;
             log.setDescription(Description.create(data));
@@ -120,14 +129,14 @@ namespace IdentityProvaider.API.AplicationServices
             return await passwordRepository.GetPasswordByHash(Hash.create(email));
         }
 
-        public async Task<User> GetPerfil(int userId)
+        public async Task<User> GetUser(int userId)
         {
             return await userQueries.GetUserIdAsync(userId);
         }
 
-        public async Task<List<User>> GetUsersByNum(int numI, int numF)
+        public async Task<List<User>> GetUsersByNum(int numI, int numF ,string state)
         {
-            return await userQueries.GetUsersByNum(numI,numF);
+            return await userQueries.GetUsersByNum(numI,numF,state);
         }
 
         public async Task<string[]> GetRolesByIdUser(int id_user)
@@ -136,9 +145,9 @@ namespace IdentityProvaider.API.AplicationServices
             return roles;
         }
 
-        public async Task<DateTime[]> GetSessionsByIdUser(int id_user)
+        public async Task<Session> GetSessionsByIdUser(int id_user)
         {
-            DateTime[] sessions = await sessionRepository.GetSessionByUserId(UserId.create(id_user));
+            Session sessions = await sessionRepository.getSesionByUserId(UserId.create(id_user));
             return sessions;
         }
 
@@ -151,15 +160,22 @@ namespace IdentityProvaider.API.AplicationServices
                 {
                     int id_user = await repository.GetIdUserByEmail(Email.create(loginCommand.email));
                     if (id_user == 0)
-                    {                      
+                    {
                         return "El usuario No se encuentra con estado Activo";
+                    }
+                    Session IsSession = await sessionRepository.getSesionByUserId(UserId.create(id_user));
+                    if (IsSession is not null)
+                    {                       
+                        if ((IsSession.loginDate.value.AddHours(8) > DateTime.Now))
+                        {
+                            return "La session no ha expirado";
+                        }                       
                     }
                     var session = new Session(UserId.create(id_user));
                     await sessionRepository.AddSession(session);
-
-                    string[] roles = await userQueries.getRolesByIdUser(id_user);                                     
-                    return generateToken(roles, "login@login", id_user);
-                }               
+                    string[] roles = await userQueries.getRolesByIdUser(id_user);
+                    return generateToken(roles, loginCommand.email, id_user);
+                }                        
                 return "Contraseña incorrecta";
             }                       
             return "Usuario no encontrado";
@@ -184,9 +200,27 @@ namespace IdentityProvaider.API.AplicationServices
                                      claims: claims,
                                      expires: DateTime.Now.AddHours(8),
                                      signingCredentials: creds);
-
+            
             var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
             return token;
+        }
+
+        public async Task<List<Session>> getUsersInSession()
+        {
+            List<Session> sessions = await sessionRepository.getUsersInSesion();
+            return sessions;
+        }
+
+        public async Task<List<Object>> getUsersInSessionByParams(int top, DateTime init)
+        {
+            List<Object> data = await sessionRepository.getUsersInSessionByParams(top,init);
+            return data;
+        }
+
+        public async Task<List<object>> getHistoryOfLogState(int id_user)
+        {
+            List<object> data = await repository.getHistoryOfLogState(id_user);
+            return data;
         }
     }
 }

@@ -10,7 +10,10 @@ namespace IdentityProvaider.Domain.Repositories
 {
     public interface ISessionRepository
     {
-        Task<DateTime[]> GetSessionByUserId(UserId Id);
+        Task<Session>getSesionByUserId(UserId Id);
+
+        Task<List<Session>> getUsersInSesion();
+        Task<List<Object>> getUsersInSessionByParams(int top, DateTime init);
         Task AddSession(Session sessionUser);
     }
 }

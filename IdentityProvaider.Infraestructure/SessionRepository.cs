@@ -23,21 +23,49 @@ namespace IdentityProvaider.Infraestructure
             await db.SaveChangesAsync();
         }
 
-        public Task<DateTime[]> GetSessionByUserId(UserId userId)
+        public async Task<Session> getSesionByUserId(UserId userId)
         {
-            var query = (from sessions in db.InSession
-                         where sessions.id_user.value == userId.value
-                         select new { sessions }).ToList();
+            Session session = db.InSession.Where(r => r.id_user.value == userId.value).First();            
+            return session;
+        }
 
-            List<DateTime> sessionList = new List<DateTime>();
-            if (query.Count() > 0)
-            {
-                foreach (var session in query)
-                {
-                    sessionList.Add(session.sessions.loginDate.value);
-                }
+        public async Task<List<Session>> getUsersInSesion()
+        {
+            List<Session> session = db.InSession.Where(r => r.loginDate.value.AddHours(8) > DateTime.Now).ToList();
+            return session;
+        }
+
+        public async Task<List<Object>> getUsersInSessionByParams(int top , DateTime init)
+        {            
+            var session = db.InSession.Where(r => r.loginDate.value < DateTime.Now && r.loginDate.value > init ).Select(m => m.id_user.value).Distinct().ToArray();
+            List<Result> result = new List<Result>();         
+            foreach (var sessionUser in session)
+            {                
+                var num = db.InSession.Where(r => r.id_user.value == sessionUser).Count();
+                result.Add(new Result(sessionUser, num));                
             }
-            return Task.FromResult(sessionList.ToArray());
+            result.OrderBy(o => o.total).ToList();
+            if(!(top >= result.Count))
+            {
+                result.RemoveRange(top,(result.Count - top));
+            }            
+            List<Object> hola = new List<object>(); 
+            foreach (var res in result)
+            {
+                hola.Add(new { idUser = res.id_user, total = res.total });               
+            }            
+            return hola;
+        }
+
+        public class Result
+        {
+            public int id_user;
+            public int total;
+            public Result(int id_user, int total)
+            {
+                this.id_user = id_user;
+                this.total = total;
+            }
         }
     }
 }

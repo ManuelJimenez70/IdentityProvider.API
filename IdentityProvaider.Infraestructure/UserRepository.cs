@@ -1,5 +1,4 @@
-﻿
-using IdentityProvaider.Domain.Entities;
+﻿using IdentityProvaider.Domain.Entities;
 using IdentityProvaider.Domain.Repositories;
 using IdentityProvaider.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -60,16 +59,10 @@ namespace IdentityProvaider.Infraestructure
             return await db.Users.FindAsync((int)Id);
         }
 
-        public async Task<List<User>> GetUsersByNum(int numI, int numF)
+        public async Task<List<User>> GetUsersByNum(int numI, int numF, State state)
         {
-            var usersToShow = new List<User>();
-            for (int i = numI; i <= numF ;i++) {
-                var user = await db.Users.FindAsync((int)i);
-                if (user != null) {
-                    usersToShow.Add(user);
-                }
-            }
-            return usersToShow;
+            var user = db.Users.Where(r => r.state.value == state.value).Skip(numI).Take((numF - numI)).ToList();
+            return user;
         }
 
         public async Task updateRolesByUserId(UserId userId, List<Rol_User> rolesList)
@@ -95,5 +88,24 @@ namespace IdentityProvaider.Infraestructure
                                                 .Select(m => m.id_user).FirstOrDefault();
             return Task.FromResult(id_user);
         }
+
+
+        public async Task<List<object>> getHistoryOfLogState(int id_user)
+        {
+            var logs = db.Log_Users.Where(r => r.id_edit_user.value == id_user).ToList();
+            List<object> data = new List<object>();
+            logs.OrderBy(o => o.logDate.value).ToList();
+            string state = " ";           
+            foreach (var log in logs)
+            {
+                if(state.Equals(" ") | !(state.Equals(log.state.value)))
+                {
+                    state = log.state.value;
+                    data.Add(log.getLog());
+                }                
+            }   
+            return data;
+        }
+
     }
 }

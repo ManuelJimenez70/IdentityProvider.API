@@ -99,5 +99,10 @@ namespace IdentityProvaider.Domain.Entities
             this.state = state;
         }
 
+        public object getLog()
+        {
+            return new { id_log = this.id_log, id_manager = this.id_manager , id_edit_user = this.id_edit_user , date = this.logDate, state = this.state , description = this.description };
+        }
+
     }
 }

@@ -18,9 +18,9 @@ namespace IdentityProvaider.API.Queries
             return response;
         }
 
-        public async Task<List<User>> GetUsersByNum(int numI, int numF)
+        public async Task<List<User>> GetUsersByNum(int numI, int numF ,string state)
         {
-            var response = await userRepository.GetUsersByNum(numI,numF);
+            var response = await userRepository.GetUsersByNum(numI,numF, State.create(state));
             return response;
         }
         public async Task<string[]> getRolesByIdUser(int userId)
