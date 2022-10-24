@@ -31,6 +31,10 @@ namespace IdentityProvaider.Domain.ValueObjects
             {
                 throw new ArgumentNullException("El valor no puede ser nulo");
             }
+            if (value.Length>100)
+            {
+                throw new ArgumentNullException("El valor no puede ser nulo");
+            }
         }
     }
 }

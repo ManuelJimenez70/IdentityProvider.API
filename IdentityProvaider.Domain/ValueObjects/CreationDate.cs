@@ -28,7 +28,7 @@ namespace IdentityProvaider.Domain.ValueObjects
                 throw new ArgumentNullException("La fecha no puede ser la default");
             
             }else if (!(value <= DateTime.Now)) { 
-                throw new ArgumentException("La fecha ingresada supera a la fehca actual");
+                throw new ArgumentException("La fecha ingresada supera a la fecha actual");
             }
         }
     }
