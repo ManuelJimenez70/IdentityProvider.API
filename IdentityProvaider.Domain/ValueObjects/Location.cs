@@ -25,12 +25,17 @@ namespace IdentityProvaider.Domain.ValueObjects
         {
             if (value == null)
             {
-                throw new ArgumentNullException("El valor no puede ser nulo");
+                throw new ArgumentNullException("La Localidad no puede ser nula");
             }
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("El valor no puede ser nulo");
+                throw new ArgumentNullException("La Localidad no puede ser nula");
             }
+            if (value.Length > 120)
+            {
+                throw new ArgumentNullException("La Localidad supera la longitud máxima");
+            }
+
         }
     }
 }

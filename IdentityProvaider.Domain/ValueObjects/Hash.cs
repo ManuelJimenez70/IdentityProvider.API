@@ -30,13 +30,17 @@ namespace IdentityProvaider.Domain.ValueObjects
         {
             if (value == null)
             {
-                throw new ArgumentNullException("El valor no puede ser nulo");
+                throw new ArgumentNullException("El Hash no puede ser nulo");
             }
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("El valor no puede ser nulo");
+                throw new ArgumentNullException("El Hash no puede ser nulo");
             }
-            //agregar que el valor no puede ser mayor  a 50 caracteres
+            if (value.Length>120)
+            {
+                throw new ArgumentNullException("El Hash supera la longitud máxima");
+            }
+
         }
     }
 }

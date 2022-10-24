@@ -25,15 +25,15 @@ namespace IdentityProvaider.Domain.ValueObjects
         {
             if (value == null)
             {
-                throw new ArgumentNullException("El valor no puede ser nulo");
+                throw new ArgumentNullException("Las Coordenadas no pueden ser nulas");
             }
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("El valor no puede ser nulo");
+                throw new ArgumentNullException("Las Coordenadas no pueden ser nulas");
             }
             if (value.Length>100)
             {
-                throw new ArgumentNullException("El valor no puede ser nulo");
+                throw new ArgumentNullException("Las Coordenadas supera la longitud máxima");
             }
         }
     }
