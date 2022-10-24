@@ -1,4 +1,4 @@
-﻿using System;
+﻿1using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,12 +22,14 @@ namespace IdentityProvaider.Domain.ValueObjects
 
         private static void validate(DateTime value)
         {
-            // fecha no superior a la actual
+            
             if (value == new DateTime())
             {
                 throw new ArgumentNullException("La fecha no puede ser la default");
+            
+            }else if (!(value <= DateTime.Now)) { 
+                throw new ArgumentException("La fecha ingresada supera a la fehca actual");
             }
-            //agregar que el valor no puede ser mayor  a 50 caracteres
         }
     }
 }
