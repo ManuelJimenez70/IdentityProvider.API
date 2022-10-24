@@ -72,7 +72,7 @@ namespace IdentityProvaider.API.AplicationServices
 
         }
 
-        public async Task HandleCommand(UpdateUserCommand updateUserCommand)
+        public async Task HandleCommand(UpdateUserCommand updateUserCommand,string ip)
         {
             var user = new User(UserId.create(updateUserCommand.id));
             user.setEmail(Email.create(updateUserCommand.email));
@@ -85,7 +85,7 @@ namespace IdentityProvaider.API.AplicationServices
             await repository.UpdateUser(user);
 
             var log = new LogUser();
-            //log.setIP(IP.create(ip));
+            log.setIP(IP.create(ip));
             log.setIdManager(UserId.create(updateUserCommand.id_manager));
             log.setIdEditUser(UserId.create(user.id_user));
             log.setEmail(Email.create(updateUserCommand.email));

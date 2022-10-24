@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Dynamic;
+using static IdentityProvaider.API.Controllers.UserController;
 
 namespace IdentityProvaider.API.Controllers
 {
@@ -85,7 +86,18 @@ namespace IdentityProvaider.API.Controllers
         [HttpPost("updateUser")]
         public async Task<IActionResult> UpdateUser(UpdateUserCommand updatePerfil)
         {
-            await userServices.HandleCommand(updatePerfil);
+            var client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync("https://api.myip.com");
+            MyIp myIp = null;
+            try
+            {
+                myIp = await response.Content.ReadFromJsonAsync<MyIp>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            await userServices.HandleCommand(updatePerfil, myIp.ip);
             return Ok(updatePerfil);
         }
 
