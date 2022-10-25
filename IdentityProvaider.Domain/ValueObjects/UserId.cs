@@ -20,6 +20,11 @@ namespace IdentityProvaider.Domain.ValueObjects
         {
             return new UserId(value);
         }
+
+        public static implicit operator int(UserId userId)
+        {
+            return userId.value;
+        }
         private static void validate(int value)
         {
             if (value <= 0)
