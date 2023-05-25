@@ -11,6 +11,8 @@ namespace IdentityProvaider.Infraestructure
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
+
         public DbSet<Role> Roles { get; set; }
         public DbSet<LogUser> Log_Users { get; set; }
 
@@ -65,6 +67,41 @@ namespace IdentityProvaider.Infraestructure
             modelBuilder.Entity<User>().OwnsOne(o => o.state, conf =>
             {
                 conf.Property(x => x.value).HasColumnName("state");
+            });
+
+            modelBuilder.Entity<Product>(o =>
+            {
+                o.HasKey(x => x.id_product).HasName("id_product");
+            });
+
+            modelBuilder.Entity<Product>().OwnsOne(o => o.title, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("title");
+            });
+
+            modelBuilder.Entity<Product>().OwnsOne(o => o.category, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("category");
+            });
+
+            modelBuilder.Entity<Product>().OwnsOne(o => o.description, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("description");
+            });
+
+            modelBuilder.Entity<Product>().OwnsOne(o => o.image, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("image");
+            });
+
+            modelBuilder.Entity<Product>().OwnsOne(o => o.price, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("price");
+            });
+
+            modelBuilder.Entity<Product>().OwnsOne(o => o.rating, conf =>
+            {
+                conf.Property(x => x.value).HasColumnName("rating");
             });
 
             modelBuilder.Entity<LogUser>(o =>

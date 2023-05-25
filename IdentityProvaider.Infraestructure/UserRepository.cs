@@ -19,6 +19,13 @@ namespace IdentityProvaider.Infraestructure
         {
             this.db = db;
         }
+        public async Task AddUser(User user)
+        {
+            await db.AddAsync(user);
+            await db.SaveChangesAsync();
+            Console.WriteLine(user.id_user);
+        }
+
 
         public async Task addRoles(List<Rol_User> rolesList)
         {
@@ -27,13 +34,6 @@ namespace IdentityProvaider.Infraestructure
                 await db.AddAsync(role);
             }
             db.SaveChanges();
-        }
-
-        public async Task AddUser(User user)
-        {
-            await db.AddAsync(user);
-            await db.SaveChangesAsync();
-            Console.WriteLine(user.id_user);
         }
 
         public Task<string[]> getRolesByIdUser(UserId userId)

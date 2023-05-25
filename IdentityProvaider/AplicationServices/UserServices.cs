@@ -6,6 +6,7 @@ using IdentityProvaider.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 
@@ -31,7 +32,10 @@ namespace IdentityProvaider.API.AplicationServices
             this.sessionRepository = sessionRepository;
             this.config = config;
         }
-
+        public async Task<List<User>> GetUsersByNum(int numI, int numF, string state)
+        {
+            return await userQueries.GetUsersByNum(numI, numF, state);
+        }
         public async Task HandleCommand(CreateUserCommand createUser , string ip)
         {
 
@@ -134,10 +138,7 @@ namespace IdentityProvaider.API.AplicationServices
             return await userQueries.GetUserIdAsync(userId);
         }
 
-        public async Task<List<User>> GetUsersByNum(int numI, int numF ,string state)
-        {
-            return await userQueries.GetUsersByNum(numI,numF,state);
-        }
+
 
         public async Task<string[]> GetRolesByIdUser(int id_user)
         {
@@ -198,7 +199,7 @@ namespace IdentityProvaider.API.AplicationServices
 
             var securityToken = new JwtSecurityToken(
                                      claims: claims,
-                                     expires: DateTime.Now.AddHours(8),
+                                     expires: DateTime.Now.AddHours(1),
                                      signingCredentials: creds);
             
             var token = new JwtSecurityTokenHandler().WriteToken(securityToken);

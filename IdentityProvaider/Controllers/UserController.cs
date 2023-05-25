@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Dynamic;
-using static IdentityProvaider.API.Controllers.UserController;
 
 namespace IdentityProvaider.API.Controllers
 {
