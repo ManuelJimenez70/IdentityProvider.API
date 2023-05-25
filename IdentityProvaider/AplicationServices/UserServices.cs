@@ -164,14 +164,6 @@ namespace IdentityProvaider.API.AplicationServices
                     {
                         return "El usuario No se encuentra con estado Activo";
                     }
-                    Session IsSession = await sessionRepository.getSesionByUserId(UserId.create(id_user));
-                    if (IsSession is not null)
-                    {                       
-                        if ((IsSession.loginDate.value.AddHours(8) > DateTime.Now))
-                        {
-                            return "La session no ha expirado";
-                        }                       
-                    }
                     var session = new Session(UserId.create(id_user));
                     await sessionRepository.AddSession(session);
                     string[] roles = await userQueries.getRolesByIdUser(id_user);
