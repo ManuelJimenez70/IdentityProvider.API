@@ -21,18 +21,12 @@ namespace IdentityProvaider.API.Controllers
             this.userServices = userServices;
         }
 
-        /*[HttpPost("createProduct")]
+        [HttpPost("createProduct")]
         public async Task<IActionResult> AddProduct()
         {
-            var response = userServices.CreateProduct();
-            return Ok(response);
-        }*/
-        /// [HttpGet("getUserById/{id}")]
-        //public async Task<IActionResult> GetUser(int id)
-        //{
-        //  var response = await userServices.GetUser(id);
-        // return Ok(response);
-        //}
+            return Ok(await userServices.CreateProduct());
+        }
+     
 
         [HttpGet("getProductsByRange")]
         public async Task<IActionResult> GetUser(int numI, int numF)

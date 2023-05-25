@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace IdentityProvaider.Domain.ValueObjects
 {
-    public record Image
+    public record ImageProduct
     {
         public string value { get; init; }
 
-        internal Image(string value)
+        internal ImageProduct(string value)
         {
             this.value = value;
         }
 
-        public static Image create(string value)
+        public static ImageProduct create(string value)
         {
             validate(value);
-            return new Image(value);
+            return new ImageProduct(value);
         }
 
         private static void validate(string value)

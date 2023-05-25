@@ -22,6 +22,7 @@ namespace IdentityProvaider.Infraestructure
         {
             await db.AddAsync(product);
             await db.SaveChangesAsync();
+            Console.WriteLine("#########################: " + product.id_product);
         }
 
         public async Task<List<Product>> GetProductsByNum(int numI, int numF)

@@ -5,19 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
-using Image = IdentityProvaider.Domain.ValueObjects.Image;
 
 namespace IdentityProvaider.Domain.Entities
 {
     public class Product
     {
         public int id_product { get; init; }
-        public ProductName title { get; private set; }
-        public Price price { get; private set; }
-        public Description description { get; private set; }
-        public Category category { get; private set; }
-        public ValueObjects.Image image { get; private set; }
-        public Rating rating { get; private set; }
+        public ProductName title { get; set; }
+        public Price price { get; set; }
+        public Description description { get; set; }
+        public Category category { get; set; }
+        public ImageProduct image { get; set; }
+        public Rating rating { get; set; }
 
         public Product()
         {
@@ -43,7 +42,7 @@ namespace IdentityProvaider.Domain.Entities
             this.category = category;
         }
 
-        public void setImage(Image image)
+        public void setImage(ImageProduct image)
         {
             this.image = image;
         }
@@ -52,9 +51,9 @@ namespace IdentityProvaider.Domain.Entities
         {
             this.rating = rating;
         }
-        public void setPrice(Price rating)
+        public void setPrice(Price price)
         {
-            this.price = rating;
+            this.price = price;
         }
 
     }
