@@ -6,6 +6,7 @@ using IdentityProvaider.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
@@ -36,7 +37,7 @@ namespace IdentityProvaider.API.AplicationServices
         {
             return await userQueries.GetUsersByNum(numI, numF, state);
         }
-        public async Task HandleCommand(CreateUserCommand createUser , string ip)
+        public async Task HandleCommand(CreateUserCommand createUser)
         {
 
             var user = new User();
@@ -61,8 +62,6 @@ namespace IdentityProvaider.API.AplicationServices
             await passwordRepository.AddPassword(securityPassword);
 
             var log = new LogUser();
-            log.setIP(IP.create(ip));
-            log.setIdManager(UserId.create(createUser.id_manager));
             log.setIdEditUser(UserId.create(user.id_user));
             log.setEmail(Email.create(createUser.email));
             log.setName(UserName.create(createUser.name));
@@ -98,8 +97,6 @@ namespace IdentityProvaider.API.AplicationServices
             await repository.UpdateUser(user);
 
             var log = new LogUser();
-            log.setIP(IP.create(ip));
-            log.setIdManager(UserId.create(updateUserCommand.id_manager));
             log.setIdEditUser(UserId.create(user.id_user));
             log.setEmail(user.email);
             log.setName(user.name);
@@ -118,11 +115,17 @@ namespace IdentityProvaider.API.AplicationServices
             Password password = await passwordRepository.GetPasswordByHash(Hash.create(updatePassword.email));
             if (password != null)
             {
+                User user = await repository.GetUserByEmail(Email.create(updatePassword.email));
+                if (user.state.value == "Inactivo") {
+                    return "Usuario Inactivo";
+                }
                 if (password.password.value.SequenceEqual(Hash.create(updatePassword.password).value))
                 {
-                    password.setPassword(Hash.create(updatePassword.newPassword));                    
+                    password.setPassword(Hash.create(updatePassword.newPassword));
                     await passwordRepository.UpdatePassword(password);
                     return "se actualizo contraseña para el usuario: " + updatePassword.email;
+                }else {
+                    return "Contraseña incorrecta";
                 }
             }
             return "Usuario inexistente";
@@ -148,8 +151,18 @@ namespace IdentityProvaider.API.AplicationServices
 
         public async Task<Session> GetSessionsByIdUser(int id_user)
         {
-            Session sessions = await sessionRepository.getSesionByUserId(UserId.create(id_user));
-            return sessions;
+            try {
+                Session session = await sessionRepository.getSesionByUserId(UserId.create(id_user));
+                if (session == null)
+                {
+                    throw new ArgumentNullException("El usuario no tiene sesiones registradas");
+                }
+                return session;
+            }
+            catch (InvalidOperationException e) {
+                throw new ArgumentNullException("El usuario no tiene sesiones registradas");
+            }
+
         }
 
         public async Task<string> HandleCommand(LoginCommand loginCommand)
@@ -191,7 +204,7 @@ namespace IdentityProvaider.API.AplicationServices
 
             var securityToken = new JwtSecurityToken(
                                      claims: claims,
-                                     expires: DateTime.Now.AddHours(1),
+                                     expires: DateTime.Now.AddHours(4),
                                      signingCredentials: creds);
             
             var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
@@ -200,8 +213,13 @@ namespace IdentityProvaider.API.AplicationServices
 
         public async Task<List<Session>> getUsersInSession()
         {
-            List<Session> sessions = await sessionRepository.getUsersInSesion();
-            return sessions;
+            try {
+                List<Session> sessions = await sessionRepository.getUsersInSesion();
+                return sessions;
+            }
+            catch (ArgumentNullException e) {
+                throw new ArgumentNullException("No hay sesiones registradas");
+            }
         }
 
         public async Task<List<Object>> getUsersInSessionByParams(int top, DateTime init)
@@ -212,7 +230,7 @@ namespace IdentityProvaider.API.AplicationServices
 
         public async Task<List<object>> getHistoryOfLogState(int id_user)
         {
-            List<object> data = await repository.getHistoryOfLogState(id_user);
+            List<object> data = await sessionRepository.getHistoryOfLogState(id_user);
             return data;
         }
     }

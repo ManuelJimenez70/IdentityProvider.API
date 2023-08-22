@@ -14,7 +14,6 @@ namespace IdentityProvaider.Domain.Entities
         public ProductName title { get; set; }
         public Price price { get; set; }
         public Description description { get; set; }
-        public Category category { get; set; }
         public ImageProduct image { get; set; }
         public Rating rating { get; set; }
 
@@ -36,10 +35,6 @@ namespace IdentityProvaider.Domain.Entities
         public void setDescription(Description description)
         {
             this.description = description;
-        }
-        public void setCategory(Category category)
-        {
-            this.category = category;
         }
 
         public void setImage(ImageProduct image)

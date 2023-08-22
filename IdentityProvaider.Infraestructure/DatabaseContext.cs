@@ -79,11 +79,6 @@ namespace IdentityProvaider.Infraestructure
                 conf.Property(x => x.value).HasColumnName("title");
             });
 
-            modelBuilder.Entity<Product>().OwnsOne(o => o.category, conf =>
-            {
-                conf.Property(x => x.value).HasColumnName("category");
-            });
-
             modelBuilder.Entity<Product>().OwnsOne(o => o.description, conf =>
             {
                 conf.Property(x => x.value).HasColumnName("description");
@@ -113,59 +108,49 @@ namespace IdentityProvaider.Infraestructure
             {
                 conf.Property(x => x.value).HasColumnName("id_edit_user");
             });
-
-            modelBuilder.Entity<LogUser>().OwnsOne(o => o.id_manager, conf =>
-            {
-                conf.Property(x => x.value).HasColumnName("id_manager");
-            });
-
-            modelBuilder.Entity<LogUser>().OwnsOne(o => o.iP, conf =>
-            {
-                conf.Property(x => x.value).HasColumnName("ip");
-            });
    
             modelBuilder.Entity<LogUser>().OwnsOne(o => o.location, conf =>
             {
-                conf.Property(x => x.value).HasColumnName("location");
+                conf.Property(x => x.value).HasColumnName("location").IsRequired(false);
             });
             modelBuilder.Entity<LogUser>().OwnsOne(o => o.coordinate, conf =>
             {
-                conf.Property(x => x.value).HasColumnName("coordinate");
+                conf.Property(x => x.value).HasColumnName("coordinate").IsRequired(false);
             });
 
             modelBuilder.Entity<LogUser>().OwnsOne(o => o.email, conf =>
             {
-                conf.Property(x => x.value).HasColumnName("email");
+                conf.Property(x => x.value).HasColumnName("email").IsRequired(false);
             });
 
             modelBuilder.Entity<LogUser>().OwnsOne(o => o.name, conf =>
             {
-                conf.Property(x => x.value).HasColumnName("name");
+                conf.Property(x => x.value).HasColumnName("name").IsRequired(false);
             });
 
             modelBuilder.Entity<LogUser>().OwnsOne(o => o.lastName, conf =>
             {
-                conf.Property(x => x.value).HasColumnName("last_name");
+                conf.Property(x => x.value).HasColumnName("last_name").IsRequired(false);
             });
 
             modelBuilder.Entity<LogUser>().OwnsOne(o => o.typeDocument, conf =>
             {
-                conf.Property(x => x.value).HasColumnName("type_document");
+                conf.Property(x => x.value).HasColumnName("type_document").IsRequired(false);
             });
 
             modelBuilder.Entity<LogUser>().OwnsOne(o => o.identification, conf =>
             {
-                conf.Property(x => x.value).HasColumnName("document_number");
+                conf.Property(x => x.value).HasColumnName("document_number").IsRequired(false);
             });
 
             modelBuilder.Entity<LogUser>().OwnsOne(o => o.state, conf =>
             {
-                conf.Property(x => x.value).HasColumnName("state");
+                conf.Property(x => x.value).HasColumnName("state").IsRequired(false);
             });
 
             modelBuilder.Entity<LogUser>().OwnsOne(o => o.direction, conf =>
             {
-                conf.Property(x => x.value).HasColumnName("address");
+                conf.Property(x => x.value).HasColumnName("address").IsRequired(false);
             });
 
             modelBuilder.Entity<LogUser>().OwnsOne(o => o.logDate, conf =>
@@ -175,7 +160,7 @@ namespace IdentityProvaider.Infraestructure
 
             modelBuilder.Entity<LogUser>().OwnsOne(o => o.description, conf =>
             {
-                conf.Property(x => x.value).HasColumnName("description");
+                conf.Property(x => x.value).HasColumnName("description").IsRequired(false);
             });
 
             modelBuilder.Entity<Session>(o =>

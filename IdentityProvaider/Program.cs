@@ -1,10 +1,11 @@
-
+using IdentityProvaider.API;
 using IdentityProvaider.API.AplicationServices;
 using IdentityProvaider.API.Queries;
 using IdentityProvaider.Domain.Repositories;
 using IdentityProvaider.Infraestructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -19,7 +20,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DBIdentityProvaider"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DBIdentityProvaider"));
 });
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();

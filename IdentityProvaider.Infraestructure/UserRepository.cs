@@ -23,7 +23,6 @@ namespace IdentityProvaider.Infraestructure
         {
             await db.AddAsync(user);
             await db.SaveChangesAsync();
-            Console.WriteLine(user.id_user);
         }
 
 
@@ -90,22 +89,14 @@ namespace IdentityProvaider.Infraestructure
         }
 
 
-        public async Task<List<object>> getHistoryOfLogState(int id_user)
+        public Task<User> GetUserByEmail(Email userEmail)
         {
-            var logs = db.Log_Users.Where(r => r.id_edit_user.value == id_user).ToList();
-            List<object> data = new List<object>();
-            logs.OrderBy(o => o.logDate.value).ToList();
-            string state = " ";           
-            foreach (var log in logs)
-            {
-                if(state.Equals(" ") | !(state.Equals(log.state.value)))
-                {
-                    state = log.state.value;
-                    data.Add(log.getLog());
-                }                
-            }   
-            return data;
+            User user = db.Users.Where(r => r.email.value == userEmail.value).FirstOrDefault();
+            return Task.FromResult(user);
         }
+
+
+        
 
     }
 }

@@ -38,12 +38,11 @@ namespace IdentityProvaider.API.AplicationServices
                     {
                         title = ProductName.create(p.title),
                         description = Description.create(p.description),
-                        category = Category.create(p.category),
                         image = ImageProduct.create(p.image),
                         rating = Rating.create((int)random.Next(0, 11)),
                         price = Price.create((int)(p.price * 10))
                     };
-                    Console.WriteLine(product.price);
+                   
                     if (product != null)
                     {
                         await repository.AddProduct(product);

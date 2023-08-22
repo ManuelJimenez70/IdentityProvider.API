@@ -15,5 +15,7 @@ namespace IdentityProvaider.Domain.Repositories
         Task<List<Session>> getUsersInSesion();
         Task<List<Object>> getUsersInSessionByParams(int top, DateTime init);
         Task AddSession(Session sessionUser);
+
+        Task<List<object>> getHistoryOfLogState(int id_user);
     }
 }

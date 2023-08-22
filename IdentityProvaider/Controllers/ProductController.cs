@@ -22,7 +22,7 @@ namespace IdentityProvaider.API.Controllers
         }
 
         [HttpPost("createProduct")]
-        public async Task<IActionResult> AddProduct()
+        public async Task<IActionResult> CreateProduct()
         {
             return Ok(await userServices.CreateProduct());
         }

@@ -17,7 +17,7 @@ namespace IdentityProvaider.Domain.ValueObjects
         public static CreationDate create(DateTime value)
         {
             validate(value);
-            return new CreationDate(value);
+            return new CreationDate(DateTime.SpecifyKind(value, DateTimeKind.Utc));
         }
 
         private static void validate(DateTime value)

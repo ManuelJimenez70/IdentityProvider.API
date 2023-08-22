@@ -20,6 +20,7 @@ namespace IdentityProvaider.API.Controllers
         {
             this.userServices = userServices;
         }
+
         [HttpPost("createUser")]
         public async Task<IActionResult> AddUser(CreateUserCommand createPerfilCommand)
         {
@@ -66,7 +67,7 @@ namespace IdentityProvaider.API.Controllers
 
             }                  
             //string userIP = Request.UserHostAddress;
-            await userServices.HandleCommand(createPerfilCommand , myIp.ip);
+            await userServices.HandleCommand(createPerfilCommand);
             return Ok(createPerfilCommand);
         }
         [HttpGet("getUserById/{id}")]

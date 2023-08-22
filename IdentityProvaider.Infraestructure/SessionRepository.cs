@@ -31,13 +31,22 @@ namespace IdentityProvaider.Infraestructure
 
         public async Task<List<Session>> getUsersInSesion()
         {
-            List<Session> session = db.InSession.Where(r => r.loginDate.value.AddHours(8) > DateTime.Now).ToList();
+            TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
+            DateTime nowInTimeZone = TimeZoneInfo.ConvertTime(DateTime.UtcNow, timeZone);
+            DateTime utcTime = TimeZoneInfo.ConvertTimeToUtc(nowInTimeZone);
+            List<Session> session = db.InSession.Where(r => r.loginDate.value.AddHours(24) > utcTime).ToList();
             return session;
         }
 
         public async Task<List<Object>> getUsersInSessionByParams(int top , DateTime init)
-        {            
-            var session = db.InSession.Where(r => r.loginDate.value < DateTime.Now && r.loginDate.value > init ).Select(m => m.id_user.value).Distinct().ToArray();
+        {
+            TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("SA Pacific Standard Time");
+            DateTime nowInTimeZone = TimeZoneInfo.ConvertTime(DateTime.UtcNow, timeZone);
+            DateTime utcTime = TimeZoneInfo.ConvertTimeToUtc(nowInTimeZone);
+            DateTime initTime = TimeZoneInfo.ConvertTime(init, timeZone);
+            DateTime utcInitTime = TimeZoneInfo.ConvertTimeToUtc(initTime);
+
+            var session = db.InSession.Where(r => r.loginDate.value < utcTime && r.loginDate.value > utcInitTime).Select(m => m.id_user.value).Distinct().ToArray();
             List<Result> result = new List<Result>();         
             foreach (var sessionUser in session)
             {                
@@ -66,6 +75,23 @@ namespace IdentityProvaider.Infraestructure
                 this.id_user = id_user;
                 this.total = total;
             }
+        }
+
+        public async Task<List<object>> getHistoryOfLogState(int id_user)
+        {
+            var logs = db.Log_Users.Where(r => r.id_edit_user.value == id_user).ToList();
+            List<object> data = new List<object>();
+            logs.OrderBy(o => o.logDate.value).ToList();
+            string state = "";           
+            foreach (var log in logs)
+            {
+                if(!(state.Equals(log.state.value)))
+                {
+                    state = log.state.value;
+                    data.Add(log.getLog());
+                }                
+            }   
+            return data;
         }
     }
 }

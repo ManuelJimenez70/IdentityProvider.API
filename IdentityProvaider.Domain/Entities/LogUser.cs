@@ -11,37 +11,51 @@ namespace IdentityProvaider.Domain.Entities
     {
         public int id_log { get; init; }
         public UserId id_edit_user { get; private set; }
-        public UserId id_manager { get; private set; }
-        public Email email { get; private set; }
-        public UserName name { get; private set; }
-        public UserLastName lastName { get; private set; }
-        public UserTypeDocument typeDocument { get; private set; }
-        public UserIdentification identification { get; private set; }
-        public State state { get; private set; }
-        public Direction direction { get; private set; }
-        public IP iP { get; private set; }
-        public Location location { get; private set;}
-        public Coordinate coordinate { get; private set; }
+        public Email? email { get; private set; }
+        public UserName? name { get; private set; }
+        public UserLastName? lastName { get; private set; }
+        public UserTypeDocument? typeDocument { get; private set; }
+        public UserIdentification? identification { get; private set; }
+        public State? state { get; private set; }
+        public Direction? direction { get; private set; }
+        public Location? location { get; private set;}
+        public Coordinate? coordinate { get; private set; }
         public CreationDate logDate { get; private set; }
-        public Description description { get; private set; }
+        public Description? description { get; private set; }
 
         public LogUser()
         {
             logDate = CreationDate.create(DateTime.Now);
+            email = null;
+            name = null;
+            lastName = null;
+            typeDocument = null;
+            identification = null;
+            state = null;
+            direction = null;
+            location = null;
+            coordinate = null;
+            description = null;
+
         }
 
         public LogUser(int id_log, UserId id_edit_user, UserId id_manager)
         {
             this.id_log = id_log;
             this.id_edit_user = id_edit_user;
-            this.id_manager = id_manager;
             logDate = CreationDate.create(DateTime.Now);
+            email = null;
+            name = null;
+            lastName = null;
+            typeDocument = null;
+            identification = null;
+            state = null;
+            direction = null;
+            location = null;
+            coordinate = null;
+            description = null;
         }
-        public void setIP(IP iP)
-        {
-            this.iP = iP;
-        }
-
+  
         public void setLocation(Location location)
         {
             this.location = location;
@@ -51,10 +65,7 @@ namespace IdentityProvaider.Domain.Entities
         {
             this.id_edit_user = id_edit_user;
         }
-        public void setIdManager(UserId id_manager)
-        {
-            this.id_manager = id_manager;
-        }
+  
 
         public void setDescription(Description description)
         {
@@ -101,7 +112,7 @@ namespace IdentityProvaider.Domain.Entities
 
         public object getLog()
         {
-            return new { id_log = this.id_log, id_manager = this.id_manager , id_edit_user = this.id_edit_user , date = this.logDate, state = this.state , description = this.description };
+            return new { id_log = this.id_log, id_edit_user = this.id_edit_user , date = this.logDate, state = this.state , description = this.description };
         }
 
     }
