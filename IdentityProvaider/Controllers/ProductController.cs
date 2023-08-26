@@ -14,24 +14,24 @@ namespace IdentityProvaider.API.Controllers
     public class ProductController : ControllerBase
     {
 
-        private readonly ProductService userServices;
+        private readonly ProductService productSercvices;
 
         public ProductController(ProductService userServices)
         {
-            this.userServices = userServices;
+            this.productSercvices = userServices;
         }
 
         [HttpPost("createProduct")]
         public async Task<IActionResult> CreateProduct()
         {
-            return Ok(await userServices.CreateProduct());
+            return Ok(await productSercvices.CreateProduct());
         }
      
 
         [HttpGet("getProductsByRange")]
         public async Task<IActionResult> GetUser(int numI, int numF)
         {
-            return Ok(await userServices.GetProductsByNum(numI, numF));
+            return Ok(await productSercvices.GetProductsByNum(numI, numF));
         }
 
         

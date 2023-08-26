@@ -24,10 +24,17 @@ namespace IdentityProvaider.Infraestructure
             await db.SaveChangesAsync();
         }
 
+        public async Task<Product> GetProductById(int id)
+        {
+            return await db.Products.FindAsync(id);
+        }
+
         public async Task<List<Product>> GetProductsByNum(int numI, int numF)
         {
-            var products = db.Products.Skip(numI).Take((numF - numI)).ToList();
+            List<Product> products = db.Products.Skip(numI).Take((numF - numI)).ToList();
             return products;
         }
+
+
     }
 }
